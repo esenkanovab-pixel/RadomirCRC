@@ -28,6 +28,11 @@
                         <a href="" target="_blank">Send hw</a>
                     </li>
                 </ul>
+                <button class="nav_toggle" id="nav_toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
                 <button class="btn" id="btn-get">Click me!</button>
             </div>
         </div>
@@ -102,7 +107,7 @@
         <div class="container">
             <h3>Полезный ролик про Event Loop</h3>
             <div class="inner_block_video">
-                <iframe width="80%" height="450" src="https://www.youtube.com/embed/zDlg64fsQow" title="YouTube video player" frameborder="2" allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <iframe width="80%" height="450" src="https://www.youtube.com/embed/zDlg64fsQow" title="YouTube video player" frameborder="0" allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
             </div>
         </div>
     </div>
@@ -125,7 +130,7 @@
                 <div class="modal_close">&times;</div>
                 <div class="modal_title">Мы свяжемся с вами как можно быстрее!</div>
                 <input required placeholder="Ваше имя" name="fullname" type="text" class="modal_input">
-                <input required placeholder="Ваш номер телефона" name="phone_number" type="phone" class="modal_input">
+                <input required placeholder="Ваш номер телефона" name="phone_number" type="tel" class="modal_input">
                 <button class="btn btn_dark btn_min">Перезвонить мне</button>
             </form>
         </div>
@@ -134,5 +139,4 @@
 
 </body>
 <script src="js/main.js"></script>
-<script src="js/modal.js"></script>
 </html>
