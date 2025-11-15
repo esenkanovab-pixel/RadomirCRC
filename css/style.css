@@ -55,7 +55,7 @@
 
 .main_block {
     padding: 100px 0;
-    background: black;
+    background: #1e3a8a;
 }
 
 /* BUTTONS COLOR PICKER */
@@ -96,7 +96,7 @@
 
 .slider_block {
     padding: 100px 0;
-    background: black;
+    background: #1e3a8a;
 }
 
 .slider {
@@ -153,7 +153,7 @@
 /* VIDEO BLOCK */
 
 .block_video {
-    background: black;
+    background: #1e3a8a;
     padding: 100px 0;
 }
 
@@ -185,7 +185,7 @@
     position: relative;
     width: 100%;
     padding: 40px;
-    background-color: black;
+    background-color: #1e3a8a;
     border: 2px solid var(--orange);
     border-radius: 4px;
     max-height: 80vh;
@@ -227,7 +227,7 @@
 /*-------BOTTLE-------*/
 
 .botlle {
-    background: black;
+    background: #1e3a8a;
     padding: 100px 0;
 }
 
