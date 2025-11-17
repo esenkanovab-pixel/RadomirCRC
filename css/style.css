@@ -99,6 +99,15 @@
     background: #1e3a8a;
 }
 
+.inner_slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
 .slider {
     position: relative;
     width: 100%;
@@ -110,6 +119,27 @@
     align-items: center;
     justify-content: space-between;
     padding: 0 30px;
+}
+
+.btn-slide {
+    background: var(--orange);
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.btn-slide:hover {
+    background: #b68733;
+    transform: scale(1.1);
 }
 
 .slide {
