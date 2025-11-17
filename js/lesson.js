@@ -124,19 +124,28 @@ if (!somInput || !usdInput || !eurInput) {
     console.log('Converter inputs found:', { somInput, usdInput, eurInput });
 }
 
+// Status element (visible on page) to show conversion activity/errors
+const converterStatus = document.getElementById('converter_status');
+const setStatus = (text, color = 'var(--muted)') => {
+    if (converterStatus) {
+        converterStatus.textContent = text;
+        converterStatus.style.color = color;
+    }
+};
+
 const converter = (element, target1, target2, currentType) => {
     element.addEventListener('input', async () => {
-        console.log('converter input event', currentType, element.value);
+        // Visible feedback for user
+        setStatus('Converting...');
         if (isConverting) return; // предотвращаем зацикливание
         // Блокируем дальнейшие срабатывания пока идёт обновление
         isConverting = true;
         try {
             const response = await fetch('../data/converter.json');
-            console.log('fetching rates...');
             if (!response.ok) throw new Error('Не удалось загрузить данные');
 
             const data = await response.json();
-            console.log('rates', data);
+            setStatus(`Rates: 1 USD = ${data.usd} сом, 1 EUR = ${data.eur} сом`, 'var(--text)');
             const value = parseFloat(element.value);
 
             if (!element.value || isNaN(value)) {
