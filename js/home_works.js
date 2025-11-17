@@ -16,6 +16,38 @@ button.addEventListener('click', ()=>{
     }
 });
 
+// --- IIN (ИНН/ИИН) checker for second block ---
+const iinInput = document.getElementById('iin_input');
+const iinButton = document.getElementById('iin_button');
+const iinResult = document.getElementById('iin_result');
+
+function validateIIN(val) {
+    if (!val) return false;
+    const digits = val.replace(/\D/g, '');
+    return digits.length === 10; // simple rule: exactly 10 digits
+}
+
+if (iinButton && iinInput && iinResult) {
+    iinButton.addEventListener('click', () => {
+        const raw = iinInput.value.trim();
+        const digits = raw.replace(/\D/g, '');
+        console.log('IIN check', { raw, digits });
+        if (validateIIN(raw)) {
+            iinResult.textContent = 'подтвержден';
+            iinResult.style.color = 'green';
+        } else {
+            iinResult.textContent = 'неправильно ввели данные';
+            iinResult.style.color = 'red';
+        }
+    });
+
+    iinInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') iinButton.click();
+    });
+} else {
+    console.warn('IIN elements missing on this page', { iinInput, iinButton, iinResult });
+}
+
 
 //движение квадрата по квадрату
 const parentBlock = document.querySelector('.parent_block')
