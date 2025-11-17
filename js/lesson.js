@@ -358,14 +358,20 @@ function validateKyrgyzINN(value) {
 }
 
 if (innButton && innInput && innResult) {
+    console.log('INN checker initialized');
     function checkInn() {
-        const val = innInput.value.trim();
+        const raw = innInput.value;
+        const val = raw.trim();
+        const digits = val.replace(/\D/g, '');
+        console.log('Checking INN:', { raw, digits });
         if (validateKyrgyzINN(val)) {
-            innResult.textContent = 'подвержден';
+            innResult.textContent = 'подтвержден';
             innResult.style.color = 'green';
+            console.log('INN valid');
         } else {
             innResult.textContent = 'неправильно ввели данные';
             innResult.style.color = 'red';
+            console.log('INN invalid');
         }
     }
 
@@ -373,5 +379,7 @@ if (innButton && innInput && innResult) {
     innInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') checkInn();
     });
+} else {
+    console.warn('INN elements not found:', { innInput, innButton, innResult });
 }
 
