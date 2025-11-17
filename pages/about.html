@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>About Me</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/core.css">
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="header">
+        <div class="container">
+            <div class="inner_header">
+                <a href="../index.html">
+                    <div class="logotype">
+                        <h2>Java<span>Script</span></h2>
+                    </div>
+                </a>
+                <ul class="menu">
+                    <li class="menu_link">
+                        <a href="../pages/home_works.html">Home Works</a>
+                    </li>
+                    <li class="menu_link">
+                        <a href="../pages/lessons.html">Lessons</a>
+                    </li>
+                    <li class="menu_link">
+                        <a href="../pages/about.html">About Me</a>
+                    </li>
+                </ul>
+                <button class="nav_toggle" id="nav_toggle" aria-label="Toggle menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <button class="btn" id="btn-get">Click me!</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="about_section">
+        <div class="container">
+            <div class="about_content">
+                <h1>Обо мне</h1>
+                <div class="about_info">
+                    <div class="about_text">
+                        <h2>Привет! Я JavaScript разработчик</h2>
+                        <p>Я молодой энтузиаст веб-разработки, увлечённый созданием интерактивных и красивых веб-приложений на JavaScript.</p>
+                        
+                        <h3>Мой путь в программировании</h3>
+                        <p>Я начал с изучения HTML и CSS, а затем погрузился в JavaScript. За время обучения я создал множество проектов, включая этот сайт-курс для других начинающих разработчиков.</p>
+                        
+                        <h3>Навыки</h3>
+                        <ul class="skills_list">
+                            <li>JavaScript (ES6+)</li>
+                            <li>HTML5</li>
+                            <li>CSS3</li>
+                            <li>Адаптивный дизайн</li>
+                            <li>Git & GitHub</li>
+                            <li>DOM манипуляция</li>
+                            <li>Асинхронное программирование</li>
+                        </ul>
+                        
+                        <h3>Проекты</h3>
+                        <p>На этом сайте я собрал различные практические задания и примеры:</p>
+                        <ul class="projects_list">
+                            <li><strong>Домашние работы:</strong> Проверка email, ИИН, игры движения</li>
+                            <li><strong>Уроки:</strong> Регулярные выражения, рекурсия, JSON, Event Loop</li>
+                            <li><strong>Игра Monster:</strong> Интерактивная игра на Canvas</li>
+                        </ul>
+                        
+                        <h3>Контакты</h3>
+                        <p>Свяжитесь со мной нажав кнопку "Click me!" в верхнем правом углу и заполнив форму. Я с удовольствием отвечу на ваши вопросы!</p>
+                        
+                        <div class="about_cta">
+                            <a href="../index.html" class="btn">Вернуться на главную</a>
+                            <button class="btn" id="btn-contact" style="margin-left: 10px;">Связаться со мной</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="container">
+            <a href="#">
+                <div class="inner_footer">
+                    <h2>Made by JavaScript Developer</h2>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="modal">
+    <div class="modal_dialog">
+        <div class="modal_content">
+            <form action="#">
+                <div class="modal_close">&times;</div>
+                <div class="modal_title">Мы свяжемся с вами как можно быстрее!</div>
+                <input required placeholder="Ваше имя" name="name" type="text" class="modal_input">
+                <input required placeholder="Ваш номер телефона" name="phone" type="tel" class="modal_input">
+                <button class="btn btn_dark btn_min">Перезвонить мне</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="../js/main.js"></script>
+</html>
