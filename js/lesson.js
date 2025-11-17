@@ -262,3 +262,72 @@ if (btnPrev) btnPrev.addEventListener('click', showPrev);
 // initialize
 renderCard();
 
+// --- Weather lookup (Open-Meteo, no API key required) ---
+const cityInput = document.querySelector('.cityName');
+const cityOut = document.querySelector('.city');
+const tempOut = document.querySelector('.temp');
+
+let weatherTimeout = null;
+
+async function fetchCoordinates(city) {
+    const url = `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Geocoding request failed');
+    const data = await res.json();
+    if (!data.results || data.results.length === 0) return null;
+    return data.results[0];
+}
+
+async function fetchCurrentWeather(lat, lon) {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&temperature_unit=celsius&windspeed_unit=ms`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error('Weather request failed');
+    return await res.json();
+}
+
+async function lookupWeather(city) {
+    if (!city || city.trim().length < 1) return;
+    try {
+        if (cityOut) cityOut.textContent = 'Поиск...';
+        if (tempOut) tempOut.textContent = '';
+
+        const coord = await fetchCoordinates(city);
+        if (!coord) {
+            if (cityOut) cityOut.textContent = 'Город не найден';
+            return;
+        }
+
+        const weatherData = await fetchCurrentWeather(coord.latitude, coord.longitude);
+        if (!weatherData || !weatherData.current_weather) {
+            if (cityOut) cityOut.textContent = `${coord.name}, ${coord.country}`;
+            if (tempOut) tempOut.textContent = 'Погода недоступна';
+            return;
+        }
+
+        const cw = weatherData.current_weather;
+        if (cityOut) cityOut.textContent = `${coord.name}, ${coord.country}`;
+        if (tempOut) tempOut.textContent = `${cw.temperature.toFixed(1)}°C, wind ${cw.windspeed} m/s`;
+    } catch (err) {
+        console.error(err);
+        if (cityOut) cityOut.textContent = 'Ошибка получения данных';
+        if (tempOut) tempOut.textContent = '';
+    }
+}
+
+if (cityInput) {
+    // trigger on Enter
+    cityInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            lookupWeather(cityInput.value);
+        }
+    });
+
+    // optional: debounce on input (live search)
+    cityInput.addEventListener('input', () => {
+        if (weatherTimeout) clearTimeout(weatherTimeout);
+        weatherTimeout = setTimeout(() => {
+            lookupWeather(cityInput.value);
+        }, 700);
+    });
+}
+
