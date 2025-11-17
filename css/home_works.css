@@ -2,51 +2,71 @@
 /* GMAIL BLOCK */
 
 .gmail_block {
-    background: black;
+    background: rgb(89, 120, 162);
     padding: 100px 0;
+}
+
+.gmail_block h2 {
+    margin-bottom: 50px;
 }
 
 .inner_gmail_block {
     margin-top: 50px;
     display: flex;
     justify-content: space-evenly;
-    border: 1px solid var(--orange);
-    height: 300px;
-    border-radius: 20px;
     align-items: center;
+    gap: 40px;
+    background: rgb(89, 120, 162);
 }
 
 .form_gmail {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 40px;
+    background: white;
+    border: 2px solid var(--orange);
+    border-radius: 12px;
+    min-width: 400px;
+}
+
+.form_gmail input {
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 .form_gmail button {
     width: 100%;
-    margin: 20px 0;
+    margin-top: 20px;
 }
 
 /* MOVE BLOCK */
 
 .move_block {
-    background: black;
+    background: rgb(89, 120, 162);
     padding: 100px 0;
+}
+
+.move_block h2 {
+    margin-bottom: 50px;
 }
 
 .parent_block {
     height: 500px;
     width: 500px;
-    border: 1px solid var(--orange);
+    border: 2px solid var(--orange);
     position: relative;
-    margin: 0 auto;
+    margin: 50px auto 0;
+    border-radius: 12px;
+    background: rgb(89, 120, 162);
 }
 
 .inner_parent_block {
     height: 400px;
     width: 400px;
-    border: 1px solid var(--orange);
-    border-radius: 18px;
+    border: 2px solid #ddd;
+    border-radius: 12px;
+    background: rgba(255, 149, 0, 0.05);
 }
 
 .child_block {
@@ -54,10 +74,10 @@
     top: 0;
     width: 50px;
     height: 50px;
-    background-color: red;
+    background-color: var(--orange);
+    border-radius: 6px;
+    transition: all 0.3s ease;
 }
-
-
 
 .inner_move_block {
     margin-top: 50px;
@@ -73,14 +93,16 @@
     inset: 0;
     margin: auto;
     border-radius: 50%;
-    color: white;
+    background: white;
+    border: 3px solid var(--orange);
+    box-shadow: 0 0 0 2px white, 0 0 20px rgba(255, 149, 0, 0.2);
 }
 
 .spike {
     position: absolute;
     width: 8px;
     height: 1px;
-    background: #fff9;
+    background: #333;
     line-height: 20px;
     transform-origin: 50%;
     z-index: 5;
@@ -89,24 +111,28 @@
     font-style: normal;
     transform: rotate(var(--rotate)) translateX(var(--dail-size));
 }
+
 .spike:nth-child(5n+1) {
-    box-shadow: -7px 0 #fff9;
+    box-shadow: -7px 0 #333;
 }
+
 .spike:nth-child(5n+1):after {
     content: attr(data-i);
     position: absolute;
     right: 22px;
     top: -10px;
     transition: 1s linear;
-    transform: rotate(calc( var(--dRotate) - var(--rotate)));
+    transform: rotate(calc(var(--dRotate) - var(--rotate)));
+    color: #1e3a8a;
+    font-weight: 700;
 }
 
 .seconds {
     --dRotate: 0deg;
-    --dail-size: calc((var(--clock-size)/ 2) - 8px);
+    --dail-size: calc((var(--clock-size) / 2) - 8px);
     font-weight: 800;
     font-size: 18px;
-    transform: rotate(calc( -1 * var(--dRotate)));
+    transform: rotate(calc(-1 * var(--dRotate)));
     position: absolute;
     inset: 0;
     margin: auto;
@@ -114,9 +140,9 @@
 }
 
 .minutes {
-    --dail-size: calc((var(--clock-size)/ 2) - 65px);
+    --dail-size: calc((var(--clock-size) / 2) - 65px);
     font-size: 16px;
-    transform: rotate(calc( -1 * var(--dRotate)));
+    transform: rotate(calc(-1 * var(--dRotate)));
     position: absolute;
     inset: 0;
     margin: auto;
@@ -126,6 +152,7 @@
 .stop-anim {
     transition: 0s linear;
 }
+
 .stop-anim .spike:after {
     transition: 0s linear !important;
 }
@@ -137,59 +164,80 @@
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+    color: #1e3a8a;
 }
 
 .minute {
     font-size: 36px;
     font-weight: 900;
     position: absolute;
-    background: #000;
+    background: white;
     z-index: 10;
-    right: calc(var(--clock-size)/ 4.5);
+    right: calc(var(--clock-size) / 4.5);
     top: 50%;
     transform: translateY(-50%);
+    color: var(--orange);
 }
+
 .minute:after {
     content: "";
     position: absolute;
-    border: 2px solid #fff;
+    border: 2px solid var(--orange);
     border-right: none;
     height: 50px;
     left: -10px;
     top: 50%;
     border-radius: 40px 0 0 40px;
-    width: calc(var(--clock-size)/ 2.75);
-    transform: translatey(-50%);
+    width: calc(var(--clock-size) / 2.75);
+    transform: translateY(-50%);
 }
 
+/*-------STOP WATCH------*/
 
-/*-------STOP WATCH------ */
+.stopwatch {
+    padding: 100px 0;
+    background: rgb(89, 120, 162);
+}
+
+.stopwatch h2 {
+    margin-bottom: 50px;
+}
 
 .time {
-    color: white;
+    color: #1e3a8a;
     display: flex;
     justify-content: center;
-    font-size: 80px;
-    height: 100px;
+    font-size: 72px;
+    height: auto;
     width: 100%;
-    border-bottom: 1px solid var(--orange);
+    border: 2px solid var(--orange);
+    padding: 40px;
     margin-top: 40px;
+    font-weight: 700;
+    border-radius: 12px;
+    background: white;
 }
 
 .time_block {
     display: flex;
     width: 500px;
     justify-content: space-between;
+    gap: 15px;
+    margin: 30px auto;
 }
 
-.stopwatch {
-    padding: 100px 0;
-    background: black;
+.time_block button {
+    flex: 1;
 }
 
 .time_buttons {
     margin-top: 30px;
     width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 15px;
+}
+
+:root {
+    --orange: #FF9500;
 }

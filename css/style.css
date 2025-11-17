@@ -2,13 +2,15 @@
 
 .header {
     height: 80px;
-    background: #2c2d2f;
+    background: rgb(181, 170, 233);
     display: flex;
     align-items: center;
     width: 100%;
     position: fixed;
     top: 0;
     z-index: 2;
+    border-bottom: 2px solid #ddd;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .inner_header {
@@ -29,9 +31,16 @@
     width: fit-content;
     background: var(--orange);
     padding: 8px;
-    color: white;
-    border-radius: 5px;
+    color: rgb(233, 52, 52);
+    border-radius: 8px;
     cursor: pointer;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+
+.logotype:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(255, 149, 0, 0.3);
 }
 
 /* HEADER MENU */
@@ -43,11 +52,15 @@
 }
 
 .menu_link a {
-    color: var(--orange);
+    color: var(--text);
     text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
 }
 
 .menu_link a:hover {
+    color: var(--orange);
     text-decoration: underline;
 }
 
@@ -55,7 +68,12 @@
 
 .main_block {
     padding: 100px 0;
-    background: #1e3a8a;
+    background: rgb(89, 120, 162);
+    margin-top: 80px;
+}
+
+.main_block h1 {
+    margin-bottom: 50px;
 }
 
 /* BUTTONS COLOR PICKER */
@@ -64,18 +82,29 @@
     display: flex;
     justify-content: space-between;
     margin-top: 50px;
+    gap: 15px;
 }
 
 .btn-color {
     border-radius: 20px;
-    border-color: white !important;
+    border: 2px solid #ddd;
+    background: rgb(115, 46, 46);
+    transition: all 0.3s ease;
+    padding: 8px 12px;
+    min-width: 60px;
+}
+
+.btn-color:hover {
+    border-color: var(--orange);
+    box-shadow: 0 4px 12px rgba(255, 149, 0, 0.2);
 }
 
 /* FOOTER */
 
 .footer {
-    background: #2c2d2f;
+    background: white;
     width: 100%;
+    border-top: 2px solid #b16c2c;
 }
 
 .inner_footer {
@@ -87,8 +116,8 @@
 
 .footer h2 {
     text-transform: uppercase;
-    color: var(--orange);
-    font-weight: 600;
+    color: #1e3a8a;
+    font-weight: 700;
 }
 
 
@@ -96,7 +125,11 @@
 
 .slider_block {
     padding: 100px 0;
-    background: #1e3a8a;
+    background: white;
+}
+
+.slider_block h2 {
+    margin-bottom: 50px;
 }
 
 .inner_slider {
@@ -114,11 +147,12 @@
     height: 300px;
     overflow: hidden;
     border: 3px solid var(--orange);
-    border-radius: 20px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0 30px;
+    background: white;
 }
 
 .btn-slide {
@@ -153,27 +187,31 @@
 }
 
 .slide_card {
-    color: white;
+    color: #1e3a8a;
     margin: 0 auto;
     width: 500px;
     text-align: center;
 }
 
 .slide_card h3 {
-    color: white;
+    color: #1e3a8a;
     text-transform: uppercase;
-    font-size: 22px;
+    font-size: 24px;
+    font-weight: 700;
 }
 
 .slide_card p {
     font-size: 16px;
     text-align: justify;
-    margin: 10px 0;
+    margin: 15px 0;
+    color: #333;
+    line-height: 1.6;
 }
 
 .slide_card a {
     color: var(--orange);
     text-decoration: underline;
+    font-weight: 600;
 }
 
 .slide.active_slide {
@@ -183,14 +221,23 @@
 /* VIDEO BLOCK */
 
 .block_video {
-    background: #1e3a8a;
+    background: white;
     padding: 100px 0;
+}
+
+.block_video h2 {
+    margin-bottom: 50px;
 }
 
 .inner_block_video {
     display: flex;
     justify-content: center;
     margin-top: 50px;
+}
+
+.inner_block_video iframe {
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
 /* MODAL */
@@ -202,7 +249,7 @@
     top: 0;
     left: 0;
     z-index: 999;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -225,11 +272,12 @@
     position: relative;
     width: 100%;
     padding: 40px;
-    background-color: #1e3a8a;
+    background-color: white;
     border: 2px solid var(--orange);
-    border-radius: 4px;
+    border-radius: 12px;
     max-height: 80vh;
     overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
 }
 
 .modal_content form {
@@ -240,34 +288,42 @@
 
 .modal_close {
     position: absolute;
-    top: 8px;
-    right: 14px;
-    font-size: 30px;
-    color: red;
-    opacity: 0.5;
+    top: 12px;
+    right: 16px;
+    font-size: 28px;
+    color: var(--orange);
+    opacity: 0.7;
     font-weight: 700;
     border: none;
     background-color: transparent;
     cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.modal_close:hover {
+    opacity: 1;
+    transform: scale(1.2);
 }
 
 .modal_title {
     text-align: center;
-    font-size: 22px;
+    font-size: 24px;
     text-transform: uppercase;
-    color: white;
+    color: #1e3a8a;
+    font-weight: 700;
+    margin-bottom: 25px;
 }
 
 .modal_input, .btn_min {
     width: 100% !important;
-    margin-top: 10px;
+    margin-top: 12px;
 }
 
 
 /*-------BOTTLE-------*/
 
 .botlle {
-    background: #1e3a8a;
+    background: rgb(34, 105, 41);
     padding: 100px 0;
 }
 
@@ -281,9 +337,9 @@
     position: relative;
     width: 300px;
     height: 300px;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 149, 0, 0.1);
     border-radius: 50%;
-    border: 8px solid transparent;
+    border: 8px solid var(--orange);
     animation: animate 5s linear infinite;
     transform-origin: bottom center;
     animation-play-state: run;
@@ -315,10 +371,9 @@
     transform: translateX(-50%);
     width: 40%;
     height: 30px;
-    border: 15px solid #444;
+    border: 15px solid var(--orange);
     border-radius: 50%;
-    box-shadow: 0 10px #222;
-
+    box-shadow: 0 10px var(--orange);
 }
 
 .bowl::after {
@@ -329,12 +384,11 @@
     transform: translate(-50%, -50%);
     width: 150px;
     height: 60px;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 149, 0, 0.2);
     transform-origin: center;
     animation: animatebowlshadow 5s linear infinite;
     border-radius: 50%;
     animation-play-state: running;
-
 }
 
 
@@ -522,7 +576,6 @@
 }
 
 .about_info {
-    background: white;
     padding: 40px;
     border-radius: 12px;
     border: 2px solid var(--orange);

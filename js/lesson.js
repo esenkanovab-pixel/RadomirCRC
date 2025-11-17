@@ -4,18 +4,41 @@ const phoneButton = document.querySelector('#phone_button');
 const phoneSpan = document.querySelector('#phone_result');
 
 
-//+996550644772
-const reqExp = /^\+996 [2579]\d{2} \d{2}-\d{2}-\d{2}$/
+// проверка номера (поддержка нескольких блоков на странице)
+const phoneForms = document.querySelectorAll('.form_phone');
 
-phoneButton.addEventListener('click', ()=>{
-    if (reqExp.test(phoneInput.value)){
-        phoneSpan.innerHTML = 'Этот номер существует';
-        phoneSpan.style.color = 'green';
-    }else {
-        phoneSpan.innerHTML = 'Этот номер не существует';
-        phoneSpan.style.color = 'red';
-    }
-})
+// Регулярные выражения
+const kyrgyzRegex = /^\+996 [2579]\d{2} \d{2}-\d{2}-\d{2}$/; // +996 5xx xx-xx-xx
+const russianRegex = /^\+7\s?9\d{2}[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2}$/; // +7 9xx xxx-xx-xx
+
+phoneForms.forEach(form => {
+    const input = form.querySelector('input');
+    const button = form.querySelector('button');
+    const result = form.querySelector('.checker');
+
+    if (!input || !button || !result) return;
+
+    button.addEventListener('click', () => {
+        const val = input.value.trim();
+        // определяем по плейсхолдеру или по первому символу
+        const isRussian = input.placeholder && input.placeholder.includes('+7');
+
+        let ok = false;
+        if (isRussian) {
+            ok = russianRegex.test(val);
+        } else {
+            ok = kyrgyzRegex.test(val);
+        }
+
+        if (ok) {
+            result.textContent = 'Номер правильно написан';
+            result.style.color = 'green';
+        } else {
+            result.textContent = 'Номер написан неверно';
+            result.style.color = 'red';
+        }
+    });
+});
 
 
 //TAB SLIDER
@@ -118,6 +141,39 @@ const converter = (element, target1, target2, currentType) => {
                     target2.value = ((value * data.eur) / data.usd).toFixed(2);
                     break;
             }
+                // Обновляем блок с разницей между суммами (в сомах и эквивалентно в USD/EUR)
+                const container = document.querySelector('.inner_converter');
+                if (container) {
+                    let diffEl = document.getElementById('convert_diff');
+                    if (!diffEl) {
+                        diffEl = document.createElement('div');
+                        diffEl.id = 'convert_diff';
+                        diffEl.style.marginTop = '12px';
+                        diffEl.style.color = '#1e3a8a';
+                        diffEl.style.fontWeight = '600';
+                        container.appendChild(diffEl);
+                    }
+
+                    const somVal = parseFloat(somInput.value);
+                    const usdVal = parseFloat(usdInput.value);
+                    const eurVal = parseFloat(eurInput.value);
+
+                    const valsInSom = [];
+                    if (!isNaN(somVal)) valsInSom.push(somVal);
+                    if (!isNaN(usdVal)) valsInSom.push(usdVal * data.usd);
+                    if (!isNaN(eurVal)) valsInSom.push(eurVal * data.eur);
+
+                    if (valsInSom.length < 2) {
+                        diffEl.textContent = '';
+                    } else {
+                        const max = Math.max(...valsInSom);
+                        const min = Math.min(...valsInSom);
+                        const diffSom = (max - min);
+                        const diffUsd = (diffSom / data.usd);
+                        const diffEur = (diffSom / data.eur);
+                        diffEl.textContent = `Разница между суммами: ${diffSom.toFixed(2)} сом (~${diffUsd.toFixed(2)} USD, ~${diffEur.toFixed(2)} EUR)`;
+                    }
+                }
         } catch (error) {
             console.error(error);
         }
