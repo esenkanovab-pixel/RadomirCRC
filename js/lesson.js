@@ -7,9 +7,11 @@ const phoneSpan = document.querySelector('#phone_result');
 // проверка номера (поддержка нескольких блоков на странице)
 const phoneForms = document.querySelectorAll('.form_phone');
 
-// Регулярные выражения
-const kyrgyzRegex = /^\+996 [2579]\d{2} \d{2}-\d{2}-\d{2}$/; // +996 5xx xx-xx-xx
-const russianRegex = /^\+7\s?9\d{2}[\s-]?\d{3}[\s-]?\d{2}[\s-]?\d{2}$/; // +7 9xx xxx-xx-xx
+// Регулярные выражения (более гибкие): допускают разные разделители и скобки
+// Кыргызстан: +996 + 9 цифр (принимаем любые пробелы/тире/скобки между цифрами)
+const kyrgyzRegex = /^\+996(?:[ \-\(\)]?\d){9}$/;
+// Россия: +7 + 10 цифр (принимаем любые пробелы/тире/скобки между цифрами)
+const russianRegex = /^\+7(?:[ \-\(\)]?\d){10}$/;
 
 phoneForms.forEach(form => {
     const input = form.querySelector('input');
