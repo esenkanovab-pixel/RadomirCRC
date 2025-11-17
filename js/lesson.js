@@ -220,35 +220,45 @@ converter(eurInput, somInput, usdInput, 'eur');
 
 
 //Card Swicher
-
 const card = document.querySelector('.card');
 const btnPrev = document.querySelector('#btn-prev');
 const btnNext = document.querySelector('#btn-next');
 
-let count = 1
-const totalCards = 200
+// Texts for the Card Switcher (circular)
+const cardTexts = [
+    'Welcome to the Card Switcher — use Next / Prev to browse.',
+    'Tip: fields and examples are interactive on this page.',
+    'You can put any text here: instructions, quotes, or notes.',
+    'The cards loop: Next on last goes to first, Prev on first goes to last.',
+    'Enjoy building interactive components with vanilla JavaScript!'
+];
 
-async function getCardData(cardNumber){
-    try{
+let cardIndex = 0;
 
-        const response = await fetch(`https://jsonplaceholder.typicode.com/todos/${cardNumber}`);
-        if(!response.ok){
-            throw new Error('Error in server')
-        }
-        return await response.json()
-
-    }catch (error){
-        console.log('errrr data: ', error);
-        return null;
-        
-    }
-}
-
-function updateCard(cardData){
+function renderCard() {
+    if (!card) return;
+    const text = cardTexts[cardIndex];
     card.innerHTML = `
-    <p>${cardData.title}</p>
-    <p style='color: ${cardData.completed ? "green": "yellow"}'> ${cardData.completed}
-    <span>${cardData.id}</span>
-    `
+        <div class="card_inner">
+            <p class="card_text">${text}</p>
+            <div class="card_footer">${cardIndex + 1} / ${cardTexts.length}</div>
+        </div>
+    `;
 }
+
+function showNext() {
+    cardIndex = (cardIndex + 1) % cardTexts.length;
+    renderCard();
+}
+
+function showPrev() {
+    cardIndex = (cardIndex - 1 + cardTexts.length) % cardTexts.length;
+    renderCard();
+}
+
+if (btnNext) btnNext.addEventListener('click', showNext);
+if (btnPrev) btnPrev.addEventListener('click', showPrev);
+
+// initialize
+renderCard();
 
