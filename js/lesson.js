@@ -31,10 +31,10 @@ phoneForms.forEach(form => {
         }
 
         if (ok) {
-            result.textContent = 'Номер правильно написан';
+            result.textContent = 'верно';
             result.style.color = 'green';
         } else {
-            result.textContent = 'Номер написан неверно';
+            result.textContent = 'не верный';
             result.style.color = 'red';
         }
     });
