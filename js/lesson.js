@@ -114,8 +114,17 @@ const somInput = document.querySelector('#som');
 const usdInput = document.querySelector('#usd');
 const eurInput = document.querySelector('#eur');
 
+// INN elements (Kyrgyzstan)
+const innInput = document.getElementById('inn_input');
+const innButton = document.getElementById('inn_button');
+const innResult = document.getElementById('inn_result');
+
 // Флаг, чтобы предотвратить рекурсивные срабатывания при программном обновлении полей
 let isConverting = false;
+
+// Fixed rates (requested)
+const USD_RATE = 87; // 1 USD = 87 SOM
+const EUR_RATE = 101; // 1 EUR = 101 SOM
 
 // Debug: убедимся, что элементы существуют
 if (!somInput || !usdInput || !eurInput) {
@@ -134,43 +143,53 @@ const setStatus = (text, color = 'var(--muted)') => {
 };
 
 const converter = (element, target1, target2, currentType) => {
-    element.addEventListener('input', async () => {
+    element.addEventListener('input', () => {
         // Visible feedback for user
         setStatus('Converting...');
         if (isConverting) return; // предотвращаем зацикливание
-        // Блокируем дальнейшие срабатывания пока идёт обновление
         isConverting = true;
         try {
-            const response = await fetch('../data/converter.json');
-            if (!response.ok) throw new Error('Не удалось загрузить данные');
-
-            const data = await response.json();
-            setStatus(`Rates: 1 USD = ${data.usd} сом, 1 EUR = ${data.eur} сом`, 'var(--text)');
             const value = parseFloat(element.value);
 
             if (!element.value || isNaN(value)) {
                 target1.value = '';
                 target2.value = '';
-                // очистим разницу
                 const diffEl = document.getElementById('convert_diff');
                 if (diffEl) diffEl.textContent = '';
+                setStatus('Введите число', 'var(--muted)');
                 return;
             }
 
+            // Local computed values
+            let somVal = null;
+            let usdVal = null;
+            let eurVal = null;
+
             switch(currentType) {
                 case 'som':
-                    target1.value = (value / data.usd).toFixed(2);
-                    target2.value = (value / data.eur).toFixed(2);
+                    somVal = value;
+                    usdVal = somVal / USD_RATE;
+                    eurVal = somVal / EUR_RATE;
+                    target1.value = usdVal.toFixed(2);
+                    target2.value = eurVal.toFixed(2);
                     break;
                 case 'usd':
-                    target1.value = (value * data.usd).toFixed(2);
-                    target2.value = ((value * data.usd) / data.eur).toFixed(2);
+                    usdVal = value;
+                    somVal = usdVal * USD_RATE;
+                    eurVal = somVal / EUR_RATE;
+                    target1.value = somVal.toFixed(2);
+                    target2.value = eurVal.toFixed(2);
                     break;
                 case 'eur':
-                    target1.value = (value * data.eur).toFixed(2);
-                    target2.value = ((value * data.eur) / data.usd).toFixed(2);
+                    eurVal = value;
+                    somVal = eurVal * EUR_RATE;
+                    usdVal = somVal / USD_RATE;
+                    target1.value = somVal.toFixed(2);
+                    target2.value = usdVal.toFixed(2);
                     break;
             }
+
+            setStatus(`Rates: 1 USD = ${USD_RATE} сом, 1 EUR = ${EUR_RATE} сом`, 'var(--text)');
 
             // Обновляем блок с разницей между суммами (в сомах и эквивалентно в USD/EUR)
             const container = document.querySelector('.inner_converter');
@@ -185,14 +204,14 @@ const converter = (element, target1, target2, currentType) => {
                     container.appendChild(diffEl);
                 }
 
-                const somVal = parseFloat(somInput.value);
-                const usdVal = parseFloat(usdInput.value);
-                const eurVal = parseFloat(eurInput.value);
+                const aSom = parseFloat(somInput.value);
+                const aUsd = parseFloat(usdInput.value);
+                const aEur = parseFloat(eurInput.value);
 
                 const valsInSom = [];
-                if (!isNaN(somVal)) valsInSom.push(somVal);
-                if (!isNaN(usdVal)) valsInSom.push(usdVal * data.usd);
-                if (!isNaN(eurVal)) valsInSom.push(eurVal * data.eur);
+                if (!isNaN(aSom)) valsInSom.push(aSom);
+                if (!isNaN(aUsd)) valsInSom.push(aUsd * USD_RATE);
+                if (!isNaN(aEur)) valsInSom.push(aEur * EUR_RATE);
 
                 if (valsInSom.length < 2) {
                     diffEl.textContent = '';
@@ -200,15 +219,14 @@ const converter = (element, target1, target2, currentType) => {
                     const max = Math.max(...valsInSom);
                     const min = Math.min(...valsInSom);
                     const diffSom = (max - min);
-                    const diffUsd = (diffSom / data.usd);
-                    const diffEur = (diffSom / data.eur);
+                    const diffUsd = (diffSom / USD_RATE);
+                    const diffEur = (diffSom / EUR_RATE);
                     diffEl.textContent = `Разница между суммами: ${diffSom.toFixed(2)} сом (~${diffUsd.toFixed(2)} USD, ~${diffEur.toFixed(2)} EUR)`;
                 }
             }
         } catch (error) {
             console.error(error);
         } finally {
-            // Разблокируем после завершения обновления
             isConverting = false;
         }
     });
@@ -328,6 +346,32 @@ if (cityInput) {
         weatherTimeout = setTimeout(() => {
             lookupWeather(cityInput.value);
         }, 700);
+    });
+}
+
+// --- INN (Кыргызстан) validation ---
+// Простая валидация: убираем все не-цифры и проверяем длину (10 цифр)
+function validateKyrgyzINN(value) {
+    if (!value) return false;
+    const digits = value.replace(/\D/g, '');
+    return digits.length === 10;
+}
+
+if (innButton && innInput && innResult) {
+    function checkInn() {
+        const val = innInput.value.trim();
+        if (validateKyrgyzINN(val)) {
+            innResult.textContent = 'подвержден';
+            innResult.style.color = 'green';
+        } else {
+            innResult.textContent = 'неправильно ввели данные';
+            innResult.style.color = 'red';
+        }
+    }
+
+    innButton.addEventListener('click', checkInn);
+    innInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') checkInn();
     });
 }
 
