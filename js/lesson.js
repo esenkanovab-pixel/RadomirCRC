@@ -117,16 +117,26 @@ const eurInput = document.querySelector('#eur');
 // Флаг, чтобы предотвратить рекурсивные срабатывания при программном обновлении полей
 let isConverting = false;
 
+// Debug: убедимся, что элементы существуют
+if (!somInput || !usdInput || !eurInput) {
+    console.warn('Converter inputs missing:', { somInput, usdInput, eurInput });
+} else {
+    console.log('Converter inputs found:', { somInput, usdInput, eurInput });
+}
+
 const converter = (element, target1, target2, currentType) => {
     element.addEventListener('input', async () => {
+        console.log('converter input event', currentType, element.value);
         if (isConverting) return; // предотвращаем зацикливание
         // Блокируем дальнейшие срабатывания пока идёт обновление
         isConverting = true;
         try {
             const response = await fetch('../data/converter.json');
+            console.log('fetching rates...');
             if (!response.ok) throw new Error('Не удалось загрузить данные');
 
             const data = await response.json();
+            console.log('rates', data);
             const value = parseFloat(element.value);
 
             if (!element.value || isNaN(value)) {
