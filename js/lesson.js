@@ -114,8 +114,14 @@ const somInput = document.querySelector('#som');
 const usdInput = document.querySelector('#usd');
 const eurInput = document.querySelector('#eur');
 
+// Флаг, чтобы предотвратить рекурсивные срабатывания при программном обновлении полей
+let isConverting = false;
+
 const converter = (element, target1, target2, currentType) => {
     element.addEventListener('input', async () => {
+        if (isConverting) return; // предотвращаем зацикливание
+        // Блокируем дальнейшие срабатывания пока идёт обновление
+        isConverting = true;
         try {
             const response = await fetch('../data/converter.json');
             if (!response.ok) throw new Error('Не удалось загрузить данные');
@@ -126,6 +132,9 @@ const converter = (element, target1, target2, currentType) => {
             if (!element.value || isNaN(value)) {
                 target1.value = '';
                 target2.value = '';
+                // очистим разницу
+                const diffEl = document.getElementById('convert_diff');
+                if (diffEl) diffEl.textContent = '';
                 return;
             }
 
@@ -143,41 +152,45 @@ const converter = (element, target1, target2, currentType) => {
                     target2.value = ((value * data.eur) / data.usd).toFixed(2);
                     break;
             }
-                // Обновляем блок с разницей между суммами (в сомах и эквивалентно в USD/EUR)
-                const container = document.querySelector('.inner_converter');
-                if (container) {
-                    let diffEl = document.getElementById('convert_diff');
-                    if (!diffEl) {
-                        diffEl = document.createElement('div');
-                        diffEl.id = 'convert_diff';
-                        diffEl.style.marginTop = '12px';
-                        diffEl.style.color = '#1e3a8a';
-                        diffEl.style.fontWeight = '600';
-                        container.appendChild(diffEl);
-                    }
 
-                    const somVal = parseFloat(somInput.value);
-                    const usdVal = parseFloat(usdInput.value);
-                    const eurVal = parseFloat(eurInput.value);
-
-                    const valsInSom = [];
-                    if (!isNaN(somVal)) valsInSom.push(somVal);
-                    if (!isNaN(usdVal)) valsInSom.push(usdVal * data.usd);
-                    if (!isNaN(eurVal)) valsInSom.push(eurVal * data.eur);
-
-                    if (valsInSom.length < 2) {
-                        diffEl.textContent = '';
-                    } else {
-                        const max = Math.max(...valsInSom);
-                        const min = Math.min(...valsInSom);
-                        const diffSom = (max - min);
-                        const diffUsd = (diffSom / data.usd);
-                        const diffEur = (diffSom / data.eur);
-                        diffEl.textContent = `Разница между суммами: ${diffSom.toFixed(2)} сом (~${diffUsd.toFixed(2)} USD, ~${diffEur.toFixed(2)} EUR)`;
-                    }
+            // Обновляем блок с разницей между суммами (в сомах и эквивалентно в USD/EUR)
+            const container = document.querySelector('.inner_converter');
+            if (container) {
+                let diffEl = document.getElementById('convert_diff');
+                if (!diffEl) {
+                    diffEl = document.createElement('div');
+                    diffEl.id = 'convert_diff';
+                    diffEl.style.marginTop = '12px';
+                    diffEl.style.color = '#1e3a8a';
+                    diffEl.style.fontWeight = '600';
+                    container.appendChild(diffEl);
                 }
+
+                const somVal = parseFloat(somInput.value);
+                const usdVal = parseFloat(usdInput.value);
+                const eurVal = parseFloat(eurInput.value);
+
+                const valsInSom = [];
+                if (!isNaN(somVal)) valsInSom.push(somVal);
+                if (!isNaN(usdVal)) valsInSom.push(usdVal * data.usd);
+                if (!isNaN(eurVal)) valsInSom.push(eurVal * data.eur);
+
+                if (valsInSom.length < 2) {
+                    diffEl.textContent = '';
+                } else {
+                    const max = Math.max(...valsInSom);
+                    const min = Math.min(...valsInSom);
+                    const diffSom = (max - min);
+                    const diffUsd = (diffSom / data.usd);
+                    const diffEur = (diffSom / data.eur);
+                    diffEl.textContent = `Разница между суммами: ${diffSom.toFixed(2)} сом (~${diffUsd.toFixed(2)} USD, ~${diffEur.toFixed(2)} EUR)`;
+                }
+            }
         } catch (error) {
             console.error(error);
+        } finally {
+            // Разблокируем после завершения обновления
+            isConverting = false;
         }
     });
 };
